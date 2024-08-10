@@ -90,6 +90,36 @@ def coqui(root_path, meta_file, ignored_speakers=None):
     return items
 
 
+def vits_style(root_path, meta_file, ignored_speakers=None):
+    """Interal dataset formatter."""
+    filepath = os.path.join(root_path, meta_file)
+    # ensure there are 4 columns for every line
+    with open(filepath, "r", encoding="utf8") as f:
+        lines = f.readlines()
+    num_cols = len(lines[0].split("|"))  # take the first row as reference
+    if num_cols==2:
+        speaker_name = "vutt"
+        emotion_name = "neurtral"
+    items = []
+    for idx, line in enumerate(lines):
+        if len(line.split("|")) != num_cols:
+            print(f" > Missing column in line {idx + 1} -> {line.strip()}")
+        
+        audio_file, text = line.split("|")
+        text = text.strip()
+        audio_path = os.path.join(root_path, audio_file)
+        # print(f"{text} | {audio_file}")
+        items.append(
+            {
+                "text": text,
+                "audio_file": audio_path,
+                "speaker_name": speaker_name,
+                "emotion_name": emotion_name,
+                "root_path": root_path,
+            }
+        )
+    return items
+
 def tweb(root_path, meta_file, **kwargs):  # pylint: disable=unused-argument
     """Normalize TWEB dataset.
     https://www.kaggle.com/bryanpark/the-world-english-bible-speech-dataset

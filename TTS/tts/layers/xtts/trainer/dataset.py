@@ -50,6 +50,7 @@ def get_prompt_slice(gt_path, max_sample_length, min_sample_length, sample_rate,
 
 class XTTSDataset(torch.utils.data.Dataset):
     def __init__(self, config, samples, tokenizer, sample_rate, is_eval=False):
+        print(f"sample here: {samples}")
         self.config = config
         model_args = config.model_args
         self.failed_samples = set()
@@ -78,6 +79,7 @@ class XTTSDataset(torch.utils.data.Dataset):
 
     def check_eval_samples(self):
         print(" > Filtering invalid eval samples!!")
+        print(len(self.samples))
         new_samples = []
         for sample in self.samples:
             try:

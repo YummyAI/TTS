@@ -501,6 +501,7 @@ def _expand_currency(m, lang="en", currency="USD"):
         "tr": ", ",
         "hu": ", ",
         "ko": ", ",
+        
     }
 
     if amount.is_integer():
@@ -611,6 +612,7 @@ class VoiceBpeTokenizer:
             "ja": 71,
             "hu": 224,
             "ko": 95,
+            "vi": 250
         }
 
     @cached_property
@@ -638,6 +640,8 @@ class VoiceBpeTokenizer:
             txt = japanese_cleaners(txt, self.katsu)
         elif lang == "hi":
             # @manmay will implement this
+            txt = basic_cleaners(txt)
+        elif lang == "vi":
             txt = basic_cleaners(txt)
         else:
             raise NotImplementedError(f"Language '{lang}' is not supported.")
